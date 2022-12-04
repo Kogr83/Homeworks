@@ -35,13 +35,15 @@
 - В целях улучшения предсказательной силы проведен **кластерный анализ KMeans** на train'е. Изучалось 9 решений - на 2 -> 10 кластеров. По итогам **silhouette_score выбрано решение на 5 кластеров.**
 
    <img width="651" alt="image" src="https://user-images.githubusercontent.com/79000315/205505195-50691cda-e53a-49c0-a3f4-4b2216bf9eaa.png">     
-   
-   <img width="92" alt="image" src="https://user-images.githubusercontent.com/79000315/205507730-833db295-044d-440d-a9d4-12b7266e57d9.png">
+
+- доли сегментов на train   
+
+   <img width="95" alt="image" src="https://user-images.githubusercontent.com/79000315/205514555-3b7ed3d2-67cf-4611-883c-8e31613fb57c.png">
 
 
 - перенес модель кластерного решения на test - получил 4 кластера, информация о принадлежности к сегменту добавлена в test, доля сегментов не отличается от train   
 
-   <img width="256" alt="image" src="https://user-images.githubusercontent.com/79000315/205505390-d18c76de-3d95-4200-8105-e15879de21ff.png">
+   <img width="80" alt="image" src="https://user-images.githubusercontent.com/79000315/205514525-b3660b3f-650d-4f16-a3e8-ad2d3d3e1bc6.png">
 
 2. **Подготовлено 4 модели:**
 - baseline (только на вещественных признаках без feature-engineering)
@@ -51,17 +53,19 @@
 
 Все расчеты проводились на модели **Lasso()**, чтобы занулить неважные признаки и в целях сравнимости результатов. Для подбора гиперпараметров регуляризации использовался **GridSearch**. 
 
-3. **Baseline** показала самое низкое качество на test (0.59), но самое высокое - по бизнес-метрике  
-<img width="275" alt="image" src="https://user-images.githubusercontent.com/79000315/205506023-215bba03-f6f3-4baf-aa82-44683a1c4122.png">
-<img width="352" alt="image" src="https://user-images.githubusercontent.com/79000315/205506050-ac9c88e8-9e93-4a31-8921-a6d208cef190.png">
+3. **Baseline** показала самое низкое качество на test (R2 = 0.59) и самое низкое по бизнес-метрике (0.189) 
+<img width="338" alt="image" src="https://user-images.githubusercontent.com/79000315/205514671-dab749e6-a2a3-4261-9fa1-f14229047922.png">
 
-4. **Модель только на количественных признаках** увеличила R2 (0.63), но бизнес-метрика ухудшилась: 0.223 -> 0.218
-<img width="450" alt="image" src="https://user-images.githubusercontent.com/79000315/205506140-15a63f28-9582-4f81-ae6b-fbc4e53b862b.png">
-<img width="329" alt="image" src="https://user-images.githubusercontent.com/79000315/205507266-f89e8ddd-0053-4026-a254-8ca8956da0ad.png">
+<img width="328" alt="image" src="https://user-images.githubusercontent.com/79000315/205514687-b7e07d79-4868-46cf-98d2-1345383024e8.png">
 
-5. **Модель на всех признаках** - чемпион по R2 (0.76), но по бизнес-метрике ситуация обратная: 0.223 -> 0.207
-<img width="452" alt="image" src="https://user-images.githubusercontent.com/79000315/205507427-5b355f8f-1f76-4867-933a-b2c3277812e7.png">
-<img width="360" alt="image" src="https://user-images.githubusercontent.com/79000315/205507437-1a15f372-24b2-4ff7-960c-a24042d80d49.png">
+4. **Модель только на количественных признаках** увеличила как R2 (0.63), так и бизнес-метрику: 0.189 -> 0.218
+<img width="441" alt="image" src="https://user-images.githubusercontent.com/79000315/205514780-1c3e7965-6ce5-42a6-a594-ae707f09f439.png">
+<img width="329" alt="image" src="https://user-images.githubusercontent.com/79000315/205514796-01a827b7-45ae-4ce5-a6b5-b113a1e43acd.png">
+
+5. **Модель на всех признаках** - чемпион и по R2 (0.69) и по бизнес-метрике: 0.189 -> 0.259
+<img width="358" alt="image" src="https://user-images.githubusercontent.com/79000315/205514831-ea7fd1d6-6ee7-4b58-b433-44ea083e781d.png">
+<img width="332" alt="image" src="https://user-images.githubusercontent.com/79000315/205514864-c3c54c02-1bbf-46b9-939e-2187a4e0442b.png">
+
 
 При создании модели **столкнулся с проблемой** - часть признаков присутствует в train, но отсутствует в test (и наоборот). Это приведет к проблемам в расчетах (размерность/ состав train и test не совпадут). 
 
@@ -90,7 +94,7 @@
 
 Однако, их удаление практически не повлияло на результат 
 
-<img width="369" alt="image" src="https://user-images.githubusercontent.com/79000315/205508755-9060b087-da16-4c34-9acf-f98f2fd757e4.png">
+<img width="362" alt="image" src="https://user-images.githubusercontent.com/79000315/205514954-20e24f97-8bac-45a6-94b1-b0d22abe727d.png">
 
 7. **Дальнейшие шаги по улучшению модели:**
 - добавить polynomial features (2-й степени)
@@ -98,7 +102,7 @@
 - распарсить torque (момент двигателя) и включить в аналитческий пул
 - возможно, все же стоило поработать с моделями автомобилей
 - логарифмировать некоторые признаки
-- не добавлять в модель признаки, которые сравнивают текущее значение с медианой/ средним по выборке, так как это учитывается самой моделью (на этот вывод натолкнули результаты PPS_Score)
+- не добавлять в модель признаки, которые сравнивают текущее значение с медианой/ средним по выборке, так как это учитывается самой моделью (на такой вывод натолкнули результаты PPS_Score)
 
 
 
