@@ -45,11 +45,12 @@
 
    <img width="80" alt="image" src="https://user-images.githubusercontent.com/79000315/205514525-b3660b3f-650d-4f16-a3e8-ad2d3d3e1bc6.png">
 
-2. **Подготовлено 4 модели:**
+2. **Подготовлено 5 моделей:**
 - baseline (только на вещественных признаках без feature-engineering)
-- на количественных признаках после feature-engineering
+- только на количественных признаках после feature-engineering
 - на всех признаках по итогам feature-engineering
 - удалены признаки, которые в наименьшей степени связаны с таргетом
+- на всех признаках по итогам feature-engineering + polynomial features
 
 Все расчеты проводились на модели **Lasso()**, чтобы занулить неважные признаки и в целях сравнимости результатов. Для подбора гиперпараметров регуляризации использовался **GridSearch**. 
 
@@ -62,7 +63,7 @@
 <img width="441" alt="image" src="https://user-images.githubusercontent.com/79000315/205514780-1c3e7965-6ce5-42a6-a594-ae707f09f439.png">
 <img width="329" alt="image" src="https://user-images.githubusercontent.com/79000315/205514796-01a827b7-45ae-4ce5-a6b5-b113a1e43acd.png">
 
-5. **Модель на всех признаках** - чемпион и по R2 (0.69) и по бизнес-метрике: 0.189 -> 0.259
+5. У **Модели на всех признаках** - высокий R2 (0.69) и бизнес-метрика: 0.189 -> 0.259
 <img width="358" alt="image" src="https://user-images.githubusercontent.com/79000315/205514831-ea7fd1d6-6ee7-4b58-b433-44ea083e781d.png">
 <img width="332" alt="image" src="https://user-images.githubusercontent.com/79000315/205514864-c3c54c02-1bbf-46b9-939e-2187a4e0442b.png">
 
@@ -96,8 +97,15 @@
 
 <img width="362" alt="image" src="https://user-images.githubusercontent.com/79000315/205514954-20e24f97-8bac-45a6-94b1-b0d22abe727d.png">
 
-7. **Дальнейшие шаги по улучшению модели:**
-- добавить polynomial features (2-й степени)
+7. **Последняя модель**: используются все признаках после feature-engineering + polynomial features во 2-й степени. **Это модель-чемпион** по всем показателям R2 (0.94),бизнес-метрика: 0.189 -> 0.354!
+
+<img width="438" alt="image" src="https://user-images.githubusercontent.com/79000315/205637507-ca5ad90e-1c22-4228-bf3e-cd05eec0f2f0.png">
+
+<img width="335" alt="image" src="https://user-images.githubusercontent.com/79000315/205637551-a08fae5c-d57a-4b0e-bf24-62d5d8710f1c.png">
+
+
+
+8. **Дальнейшие шаги по улучшению модели:**
 - поиграть с признаками - убрать сильно скоррелированные 
 - распарсить torque (момент двигателя) и включить в аналитческий пул
 - возможно, все же стоило поработать с моделями автомобилей
